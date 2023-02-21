@@ -1,4 +1,5 @@
-﻿using System;
+﻿using mission6_evans18.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -13,7 +14,9 @@ namespace mission6_evans18.Models
         public int MovieID { get; set; }
 
         [Required]
-        public string Category { get; set; }
+        //Build fk relationship
+        public int CategoryID { get; set; }
+        public Category Category { get; set; }
 
         [Required]
         public string Title { get; set; }

@@ -8,7 +8,7 @@ using mission6_evans18.Models;
 namespace mission6_evans18.Migrations
 {
     [DbContext(typeof(MovieResponseContext))]
-    [Migration("20230209002344_Initial")]
+    [Migration("20230221212624_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -17,15 +17,65 @@ namespace mission6_evans18.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.32");
 
+            modelBuilder.Entity("mission6_evans18.Models.Category", b =>
+                {
+                    b.Property<int>("CategoryID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CategoryName")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("CategoryID");
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryID = 1,
+                            CategoryName = "Family"
+                        },
+                        new
+                        {
+                            CategoryID = 2,
+                            CategoryName = "Action/Adventure"
+                        },
+                        new
+                        {
+                            CategoryID = 3,
+                            CategoryName = "Comedy"
+                        },
+                        new
+                        {
+                            CategoryID = 4,
+                            CategoryName = "Horror"
+                        },
+                        new
+                        {
+                            CategoryID = 5,
+                            CategoryName = "Drama"
+                        },
+                        new
+                        {
+                            CategoryID = 6,
+                            CategoryName = "Television"
+                        },
+                        new
+                        {
+                            CategoryID = 7,
+                            CategoryName = "VHS"
+                        });
+                });
+
             modelBuilder.Entity("mission6_evans18.Models.MovieResponse", b =>
                 {
                     b.Property<int>("MovieID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("CategoryID")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Director")
                         .IsRequired()
@@ -38,7 +88,8 @@ namespace mission6_evans18.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Notes")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(25);
 
                     b.Property<string>("Rating")
                         .IsRequired()
@@ -54,13 +105,15 @@ namespace mission6_evans18.Migrations
 
                     b.HasKey("MovieID");
 
+                    b.HasIndex("CategoryID");
+
                     b.ToTable("Responses");
 
                     b.HasData(
                         new
                         {
                             MovieID = 1,
-                            Category = "Family/Comedy",
+                            CategoryID = 1,
                             Director = "Jon Favreau",
                             Edited = false,
                             Rating = "PG",
@@ -70,7 +123,7 @@ namespace mission6_evans18.Migrations
                         new
                         {
                             MovieID = 2,
-                            Category = "Action/Adventure",
+                            CategoryID = 2,
                             Director = "Matt Reeves",
                             Edited = false,
                             LentTo = "",
@@ -82,7 +135,7 @@ namespace mission6_evans18.Migrations
                         new
                         {
                             MovieID = 3,
-                            Category = "Comedy",
+                            CategoryID = 3,
                             Director = "Adam McKay",
                             Edited = false,
                             LentTo = "",
@@ -91,6 +144,15 @@ namespace mission6_evans18.Migrations
                             Title = "Step Brothers",
                             Year = "2008"
                         });
+                });
+
+            modelBuilder.Entity("mission6_evans18.Models.MovieResponse", b =>
+                {
+                    b.HasOne("mission6_evans18.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
